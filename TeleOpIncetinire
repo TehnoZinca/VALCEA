@@ -4,7 +4,6 @@ import com.qualcomm.robotcore.eventloop.opmode.LinearOpMode;
 import com.qualcomm.robotcore.eventloop.opmode.TeleOp;
 import com.qualcomm.robotcore.hardware.DcMotor;
 import com.qualcomm.robotcore.hardware.DcMotorSimple;
-import com.qualcomm.robotcore.hardware.DigitalChannel;
 import com.qualcomm.robotcore.hardware.Servo;
 import com.qualcomm.robotcore.hardware.CRServo;
 import com.qualcomm.robotcore.util.ElapsedTime;
@@ -24,7 +23,8 @@ public class  TeleOpIncetinire extends LinearOpMode {
     private DcMotor ColectorE = null;
     private DcMotor ColectorV = null;
     private Servo  Mascota = null;
-    private  CRServo Parcare = null;
+    //private  CRServo Parcare = null;
+    private Servo Parcare;
     double  power   = 1;
     double mersbine=0;
     double FranaS,FranaD;
@@ -33,16 +33,13 @@ public class  TeleOpIncetinire extends LinearOpMode {
     public Servo ServoCaramida = null;
 
     int ok=0;
-    DigitalChannel digitalTouch;  // Hardware Device Object
+
 
     @Override
     public void runOpMode() {
         telemetry.addData("Status", "Initialized");
         telemetry.update();
-        digitalTouch = hardwareMap.get(DigitalChannel.class, "sensor_digital");
 
-        // set the digital channel to input.
-        digitalTouch.setMode(DigitalChannel.Mode.INPUT);
         // Initialize the hardware variables. Note that the strings used here as parameters
         // to 'get' must correspond to the names assigned during the robot configuration
         // step (using the FTC Robot Controller app on the phone).
@@ -52,10 +49,9 @@ public class  TeleOpIncetinire extends LinearOpMode {
         BrightDrive = hardwareMap.get(DcMotor.class, "Bright_drive");
         ColectorE = hardwareMap.get(DcMotor.class, "ColectorE");
         ColectorV = hardwareMap.get(DcMotor.class, "ColectorV");
-        ServoLeft = hardwareMap.get (Servo.class, "Servo1");
-        ServoRight = hardwareMap.get (Servo.class, "Servo2");
         Mascota = hardwareMap.get (Servo.class, "Mascota");
-        Parcare = hardwareMap.get (CRServo.class, "Parcare");
+        //Parcare = hardwareMap.get (CRServo.class, "Parcare");
+        Parcare = hardwareMap.get (Servo.class, "Parcare");
         ServomotorE = hardwareMap.servo.get("Servo_spateE");
         ServomotorV = hardwareMap.servo.get("Servo_spateV");
         ServoCaramida = hardwareMap.servo.get("ServoCaramida");
@@ -246,19 +242,15 @@ public class  TeleOpIncetinire extends LinearOpMode {
             if(gamepad2.y)
             {ServomotorE.setPosition(0.2);
                 ServomotorV.setPosition(0.2);}
-            }
-        while(gamepad2.dpad_right)
-        {Parcare.setPower(1);
-            sleep(100);
-            if(!(gamepad2.dpad_down)) {
-                Parcare.setPower(0);}
+
+        if(gamepad2.dpad_right)
+        {Parcare.setPosition(0.5);
+         sleep(1000);
         }
-        while(gamepad2.dpad_right)
-        {Parcare.setPower(-1);
-            sleep(100);
-            if(!(gamepad2.dpad_down)) {
-                Parcare.setPower(0);}
-        }
+       if(gamepad2.dpad_left)
+        {Parcare.setPosition(-0.7);
+        sleep(1000);
+        }}
         }
 
     public void CurbaFata(double power,double FranaD,double FranaS){
